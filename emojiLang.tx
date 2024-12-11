@@ -1,0 +1,135 @@
+Model:
+    statements*=Statement
+;
+
+Statement:
+    Assignment | Print | ForLoop | WhileLoop
+;
+
+Assignment:
+    var=VarDecl '📝' expr=Expression
+;
+
+VarDecl:
+    '⭐️' name=ID
+;
+
+ID: 
+    /[a-zA-Z_]\w*/
+;
+
+Expression:
+    OrExpr
+;
+
+OrExpr:
+    left=AndExpr ((op=OR) right=AndExpr)*
+;
+
+AndExpr:
+    left=RelExpr ((op=AND) right=RelExpr)*
+;
+
+RelExpr:
+    left=AddSub ((op=EQ|op=NEQ|op=LT|op=GT|op=LTE|op=GTE) right=AddSub)*
+;
+
+AddSub:
+    left=MulDiv ((op=Plus|op=Minus) right=MulDiv)*
+;
+
+MulDiv:
+    left=Primary ((op=Mul|op=Div) right=Primary)* 
+;
+
+Primary:
+    Number | String | VarRef | '(' Expression ')' | BooleanLiteral 
+;
+
+Number:
+    num=/\d+/
+;
+
+String:
+    val=/"([^"\\]|\\.)*"/
+;
+
+VarRef:
+    name=ID
+;
+
+Print:
+    '🖨' value=Expression
+;
+
+Plus:
+    '➕'
+;
+
+Minus:
+    '➖'
+;
+
+Mul:
+    '✖️'
+;
+
+Div:
+    '➗'
+;
+
+BooleanLiteral:
+    TrueLiteral | FalseLiteral
+;
+
+TrueLiteral:
+    '✅'
+;
+
+FalseLiteral:
+    '❌'
+;
+
+AND: 
+    '🔗'
+;
+
+OR: 
+    '⛓️'
+;
+
+EQ: 
+    '🤝'
+;
+
+NEQ: 
+    '🚫'
+;
+
+LT: 
+    '👈'
+;
+
+GT: 
+    '👉'
+;
+
+LTE: 
+    '🪜'
+;
+
+GTE: 
+    '⛰️'
+;
+
+Block:
+    '{' statements*=Statement '}'
+;
+
+ForLoop:
+    '🔁' '(' init=Assignment ';' cond=Expression ';' step=Assignment ')' block=Block
+;
+
+WhileLoop:
+    '🔁' '(' cond=Expression ')' block=Block
+;
